@@ -278,3 +278,27 @@ Result:
 - The authorization URL is intentionally omitted from this durable log because it is a one-time request containing state and PKCE parameters.
 
 Waiting for the operator to open the new URL, approve it, and return the resulting localhost callback URL (or its `code` value). Do not start another login request while waiting; it would replace the matching PKCE state.
+
+Operator returned the callback with matching state. The one-time code is omitted from this log.
+
+Exact commands (secret redacted):
+
+```bash
+openclaw mcp login zapier --code "<ONE_TIME_AUTHORIZATION_CODE>"
+openclaw mcp status --verbose
+openclaw mcp doctor zapier --probe
+openclaw mcp probe zapier --json
+```
+
+Results:
+
+- `MCP OAuth credentials saved for "zapier".`
+- Status: `zapier: streamable-http oauth authorized`
+- OAuth: `tokens=yes client=yes`
+- Doctor: `zapier: ok`
+- Probe: 17 tools, no diagnostics.
+- Available tools include connection management, action discovery/inspection, action enable/disable, and Zapier read/write action execution.
+
+Decision: **Task 6 is complete.** Native OpenClaw MCP is authenticated and active. The stale mcporter registry remains unauthenticated but is no longer the integration path; do not retry it or treat its 401 as the project status.
+
+Stop here before Task 7. Per project instructions, the operator must create a new dedicated Google/Gmail account (not a personal account) and confirm it is ready before Google Docs or Google Calendar connections are started.
