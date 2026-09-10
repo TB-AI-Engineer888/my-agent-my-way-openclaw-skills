@@ -217,3 +217,48 @@ openclaw mcp doctor zapier --probe
 Then stop and prompt for a dedicated Gmail before Tasks 7–8.
 
 No config changes until this report is delivered.
+
+---
+
+## 6. Task 6 repair — native OpenClaw OAuth
+
+Operator reported that the existing OpenClaw server's Connect tab opens an app-account dialog (for example Google Docs) and has no Generate token button.
+
+Decision correction: Zapier's token UI is only for an MCP server created with client type **Other** (unlisted client). The existing server follows Zapier's listed OpenClaw OAuth path, so it correctly does not expose a connection token. Do not create a second server merely to obtain a token.
+
+OpenClaw's current documentation provides the missing remote-host mechanism:
+
+> For a loopback redirect, OpenClaw listens for the browser callback and completes login automatically. The printed `--code` command remains the fallback for remote, headless, or unreachable callbacks.
+
+Source: https://docs.openclaw.ai/cli/mcp, OAuth workflow / manual fallback.
+
+Configuration change:
+
+- Before: `/root/.openclaw/openclaw.json` had no `mcp` object / no native `mcp.servers`.
+- Backup created: `/root/.openclaw/openclaw.json.pre-native-mcp-20260910T0336Z`
+- After: native `mcp.servers.zapier` is:
+
+```json
+{
+  "url": "https://mcp.zapier.com/api/v1/connect",
+  "transport": "streamable-http",
+  "auth": "oauth"
+}
+```
+
+Exact commands:
+
+```bash
+cp -a /root/.openclaw/openclaw.json /root/.openclaw/openclaw.json.pre-native-mcp-20260910T0336Z
+openclaw mcp add zapier --url "https://mcp.zapier.com/api/v1/connect" --transport streamable-http --auth oauth --no-probe
+openclaw mcp show zapier
+openclaw config validate
+```
+
+Results:
+
+- `Saved MCP server "zapier" to /root/.openclaw/openclaw.json.`
+- Native MCP object displays exactly as above.
+- `Config valid: ~/.openclaw/openclaw.json`
+
+Next: start `openclaw mcp login zapier`, give the operator the new authorization URL, keep the same OAuth request alive, then redeem the returned code with `openclaw mcp login zapier --code '<code>'`. Do not use the stale mcporter callback/code.
