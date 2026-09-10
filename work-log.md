@@ -302,3 +302,23 @@ Results:
 Decision: **Task 6 is complete.** Native OpenClaw MCP is authenticated and active. The stale mcporter registry remains unauthenticated but is no longer the integration path; do not retry it or treat its 401 as the project status.
 
 Stop here before Task 7. Per project instructions, the operator must create a new dedicated Google/Gmail account (not a personal account) and confirm it is ready before Google Docs or Google Calendar connections are started.
+
+---
+
+## 7. Google account confirmation and Zapier app setup
+
+Operator confirmed the dedicated Gmail account is created, can sign in, and is ready for Google consent.
+
+Decision: drive setup through the OpenClaw agent and its authenticated native Zapier MCP tools. Start in a fresh setup session so old Telegram OAuth troubleshooting context does not pollute tool selection. Inspect current connections first; do not create the rubric document/event yet.
+
+Exact command:
+
+```bash
+openclaw agent \
+  --session-key agent:main:zapier-google-setup \
+  --message "Use the authenticated native Zapier MCP tools. First inspect existing Zapier app connections and retrieve the Zapier onboarding guidance. We need a dedicated test Google account connected for exactly these rubric capabilities: Google Docs create-document and Google Calendar create-event. Do not create a document or event yet. Initiate any required connection/setup process. If browser authorization is required, return the exact configuration or authorization URL(s) and concise instructions for the human. Use MCP tools and report actual results; do not assume connections exist." \
+  --json \
+  --timeout 600
+```
+
+Status: running; waiting for actual MCP tool results or browser-authorization handoff.
