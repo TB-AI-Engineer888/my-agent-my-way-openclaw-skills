@@ -494,3 +494,63 @@ Result:
 - Tool schema size increased from 23,637 chars (broken session) to 29,341 chars (fixed session).
 
 Decision: tool routing is now repaired and verified before user retry. Because backend context was reset, send one self-contained request containing title, body scope, exact date/time/timezone, event duration, and direct-MCP instruction.
+
+---
+
+## 10. Third Telegram attempt — model selected `exec` despite MCP catalog
+
+Operator sent the self-contained request. Screenshot showed the bot eventually reported `Zapier Inspect Zapier Actions failed`.
+
+Transcript facts:
+
+- The new Telegram session's system prompt listed all 17 Zapier MCP tools.
+- Nevertheless, DeepSeek selected `exec` for commands such as:
+
+```bash
+openclaw tools call --name zapier__inspect_zapier_actions ...
+```
+
+- `openclaw tools` is not a CLI command, so these calls failed.
+- One direct inspect attempt returned `Tool zapier__inspect_zapier_actions not found` after the prior diagnostic run's per-session MCP runtime had been retired.
+- No `zapier__execute_zapier_write_action` call occurred; no external write needs rollback.
+
+Decision: prose cannot reliably overcome the model's preference for `exec`. Make the tool choice deterministic by temporarily narrowing the global allowlist to the MCP bundle. Restore normal coding tools after the successful workflow.
+
+Configuration change:
+
+- Backup: `/root/.openclaw/openclaw.json.pre-mcp-only-policy-20260910T0512Z`
+- Before: `tools = {"profile":"coding"}` (includes shell/runtime tools).
+- After: `tools = {"profile":"coding","allow":["bundle-mcp"]}`.
+
+Exact commands:
+
+```bash
+cp -a /root/.openclaw/openclaw.json /root/.openclaw/openclaw.json.pre-mcp-only-policy-20260910T0512Z
+openclaw config set tools.allow '["bundle-mcp"]'
+openclaw config validate
+openclaw config get tools
+openclaw mcp doctor zapier --probe
+openclaw gateway call sessions.reset --params '{"key":"agent:main:telegram:direct:8916402767","reason":"reset"}' --json
+```
+
+Results:
+
+- Config valid.
+- Zapier doctor: ok.
+- Telegram session reset to a fresh ID; no diagnostic turn was run in that session.
+
+Policy validation was run in a separate non-Telegram session:
+
+```bash
+openclaw agent --session-key agent:main:mcp-only-policy-check --message "Do not call tools. Reply exactly READY." --json --timeout 180
+```
+
+Verified catalog:
+
+- 17 Zapier MCP tools.
+- `zapier__inspect_zapier_actions`: present.
+- `zapier__execute_zapier_write_action`: present.
+- `exec`: absent.
+- No message delivered externally and no Zapier action called.
+
+Decision: safe for one new phone message. Shell fallback and exit 127 are impossible under this temporary allowlist.
