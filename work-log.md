@@ -563,3 +563,43 @@ Operator later supplied screenshot `assets/ad46bcda-d372-43ba-810e-aa893c64f263.
 - Current post-fix Telegram transcript contains no user request; it is a new empty session waiting for the phone message.
 
 Decision: do not diagnose this screenshot as a failure of the MCP-only policy and do not create objects from a maintenance session yet. Ask the operator to send the provided self-contained message once in the current session.
+
+---
+
+## 11. Controlled completion and live Telegram repair
+
+The operator's next Telegram messages were `Ok` and `Did you create the Google doc as you promised`, rather than a repeat of the self-contained creation request. Inspection of the new Telegram transcript showed that the gateway process still exposed `exec`, despite `tools.allow=["bundle-mcp"]` being valid on disk. The prior policy check used a separate CLI run and therefore did not prove that the already-running gateway had reloaded the policy.
+
+Meanwhile, the controlled OpenClaw session `agent:main:zapier-controlled-execution` completed both native MCP writes:
+
+- Created exactly one Google Doc titled `OpenClaw homework notes`.
+- Created exactly one 30-minute Google Calendar event titled `Review OpenClaw homework notes`, Friday September 11, 2026, 3:00–3:30 PM America/Toronto.
+- Included the returned Google Doc URL in the event description.
+- Both Zapier write calls returned successful Google object records. IDs, account details, and URLs are omitted from this public log.
+
+Decision: restart the long-running gateway so it reloads the strict MCP-only tool policy, reset the Telegram session, validate the resulting tool catalog, and then send the verified completion through Telegram.
+
+Exact VPS commands:
+
+```bash
+systemctl --user restart openclaw-gateway.service
+systemctl --user is-active openclaw-gateway.service
+openclaw health
+openclaw mcp doctor zapier --probe
+openclaw gateway call sessions.reset --params '{"key":"agent:main:telegram:direct:<TELEGRAM_USER_ID>","reason":"reset"}' --json
+openclaw message send --help
+openclaw agent --session-key agent:main:telegram:direct:<TELEGRAM_USER_ID> --message "Diagnostic only. Do not call tools and do not deliver externally. Reply exactly READY." --json --timeout 180
+openclaw message send --channel telegram --target <TELEGRAM_USER_ID> --message "<VERIFIED_COMPLETION_WITH_DOCUMENT_URL>" --json
+```
+
+The first post-restart `openclaw health` ran before the gateway was ready and failed with WebSocket close code 1006. Retrying after five seconds succeeded; this was startup timing, not a persistent service failure.
+
+Validation results:
+
+- Gateway active; Telegram configured.
+- Zapier MCP doctor: `ok`.
+- Fresh Telegram session's `systemPromptReport.tools.entries` contains all 17 `zapier__*` tools, including `zapier__inspect_zapier_actions` and `zapier__execute_zapier_write_action`.
+- The exact runtime tool list contains no `exec` or `web_search`.
+- Telegram accepted the completion message and returned message ID 209.
+
+Root cause correction: the Zapier MCP registration and authorization were correct, but the gateway had retained the old tool policy in memory. A session reset alone was insufficient; a gateway restart was required to make the live Telegram runtime use the new MCP-only policy.
