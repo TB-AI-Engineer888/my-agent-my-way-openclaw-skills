@@ -33,10 +33,10 @@ The destination is a new Google Doc titled
 4. “Open questions or blockers”; and
 5. “Next step”.
 
-The writing should be direct, practical, and visibly tailored to Teresa's
-bootcamp context. Success means Zapier returns a successful Google Docs write
-and Scout confirms the exact title and returned link. A local Markdown file is
-not a successful fallback.
+The writing should be direct, practical, and visibly tailored to Teresa's AI
+engineering studies. Success means Zapier returns a successful Google Docs
+write and Charles confirms the exact title and returned link. A local Markdown
+file is not a successful fallback.
 
 ## Skill 2: Smart Study Event
 
@@ -65,10 +65,10 @@ America/Toronto time zone, a short description with the intended outcome and up
 to three focus bullets, and Teresa's requested reminder (or a documented
 default 15-minute reminder).
 
-Success means the connected Calendar tool returns a successful write and Scout
-confirms the title, absolute date, 12-hour time range, time zone, and returned
-event link or identifier. It must not create a duplicate after a partial
-failure.
+Success means the connected Calendar tool returns a successful write and
+Charles confirms the title, absolute date, 12-hour time range, time zone, and
+returned event link or identifier. It must not create a duplicate after a
+partial failure.
 
 ## Why these two skills
 

@@ -67,7 +67,7 @@ encouragement and do not turn guesses into facts.
    - `tool_name`: `google_docs_create_document_from_text`
    - the composed title and body in the schema's required fields.
 4. Treat the skill as successful only when the write tool reports success.
-5. Reply as Scout with the exact document title and returned Google Docs link
+5. Reply as Charles with the exact document title and returned Google Docs link
    when available. Keep the confirmation to two short sentences.
 
 If the tool fails, state that no verified Google Doc was created and report the

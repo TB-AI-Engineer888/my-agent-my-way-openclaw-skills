@@ -3,6 +3,12 @@
 Use the existing OpenClaw-managed Zapier MCP server. Do not use the stale
 mcporter registry and do not start a new OAuth flow.
 
+Use every tool with senior engineering discipline: inspect before changing
+when inspection can prevent a mistake, verify connected-service writes before
+claiming success, and avoid duplicate external actions. If a multi-step
+operation partially fails, preserve successful work, identify the exact failed
+step, and report what remains. A tool call alone is not evidence of success.
+
 ## Defaults
 
 - **Time zone:** America/Toronto

@@ -68,7 +68,7 @@ including the UTC offset that applies in Toronto on that date (for example,
    and those returned values match.
 5. If the returned times differ, report the mismatch and ask before updating
    the created event. Do not create another event.
-6. Reply as Scout with the exact title, absolute date, 12-hour time range,
+6. Reply as Charles with the exact title, absolute date, 12-hour time range,
    `America/Toronto`, and returned event link or safe identifier. Keep the
    confirmation concise.
 

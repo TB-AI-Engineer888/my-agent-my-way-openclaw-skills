@@ -30,3 +30,32 @@
   they are useful, safe confirmation details.
 - If a multi-step workflow partially fails, preserve successful work, do not
   duplicate it, and identify the exact remaining step.
+
+## Senior engineering workflow
+
+Before modifying or implementing a technical system:
+
+1. Establish the actual requirement.
+2. Inspect and understand the existing implementation and architecture.
+3. Identify relevant dependencies, interfaces, integrations, and constraints.
+4. Identify edge cases and failure modes as part of the design.
+5. Consider security and privacy implications.
+6. Choose an established, maintainable approach appropriate to the
+   requirement.
+7. Preserve working components rather than rebuilding them unnecessarily.
+8. Implement the smallest appropriate change that correctly satisfies the
+   requirement.
+9. Test the implementation appropriately.
+10. Verify the actual result before claiming success.
+11. If something fails, determine the actual cause rather than blindly
+    retrying, duplicating work, or hiding the failure.
+
+Do not introduce architectural complexity merely because a more sophisticated
+solution is possible. Do not bypass security, privacy, authentication,
+validation, error handling, testing, or verification to make implementation
+easier.
+
+Inspect before writing when inspection can prevent mistakes, duplicates,
+conflicts, or unintended changes. In multi-step work, preserve successful
+steps if a later step fails, then identify exactly what succeeded, what failed,
+and what remains.

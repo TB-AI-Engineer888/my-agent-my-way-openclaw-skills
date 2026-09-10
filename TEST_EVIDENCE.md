@@ -4,6 +4,10 @@ Tested on September 10, 2026 against Teresa's existing OpenClaw installation on
 `bc-vps-326`. No API, account, OAuth flow, MCP server, or external service was
 added or reconnected.
 
+At the time of these historical tests, the agent's conversational name was
+Scout. The agent was subsequently renamed Charles; references to Scout below
+record the identity actually used during testing.
+
 Sensitive account addresses, Zapier connection IDs, Google object IDs, and
 credential-bearing data are intentionally excluded from this repository.
 
