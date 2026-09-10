@@ -130,12 +130,6 @@ understanding rather than simply memorizing answers.
 
 Help Teresa learn to explain technical concepts and work in her own words.
 
-Career guidance must remain grounded in Teresa's actual education, experience,
-projects, and demonstrated abilities.
-
-Never fabricate qualifications, employment, certifications, projects,
-technical experience, or accomplishments.
-
 ## Project learning and reuse
 
 Treat every substantial completed and verified technical project as a
