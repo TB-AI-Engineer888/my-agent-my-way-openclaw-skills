@@ -43,8 +43,11 @@ check is required unless she requests one.
   15-minute reminder and disclose that default before writing
 - **Related material:** include a supplied Google Doc link in the description
 
-Use 12-hour time in user-facing text, with `America/Toronto` shown. Use the
-date-time format required by the connected action schema in the tool call.
+Use 12-hour time in user-facing text, with `America/Toronto` shown. For
+`start__dateTime` and `end__dateTime`, submit a complete RFC 3339 timestamp
+including the UTC offset that applies in Toronto on that date (for example,
+`2026-09-11T10:00:00-04:00`). Never submit a timezone-less value such as
+`2026-09-11T10:00:00`; Zapier may reinterpret it and shift the event.
 
 ## Confirm, create, and verify
 
@@ -60,8 +63,12 @@ date-time format required by the connected action schema in the tool call.
    - `tool_name`: `google_calendar_create_detailed_event`
    - the title, start, end, time zone, description, and reminder mapped to the
      schema's fields.
-4. Treat the skill as successful only when the write tool reports success.
-5. Reply as Scout with the exact title, absolute date, 12-hour time range,
+4. Compare the returned event's start and end values with Teresa's requested
+   values. Treat the skill as successful only when the write reports success
+   and those returned values match.
+5. If the returned times differ, report the mismatch and ask before updating
+   the created event. Do not create another event.
+6. Reply as Scout with the exact title, absolute date, 12-hour time range,
    `America/Toronto`, and returned event link or safe identifier. Keep the
    confirmation concise.
 
