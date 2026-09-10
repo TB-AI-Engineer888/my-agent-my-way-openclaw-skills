@@ -227,6 +227,11 @@ problem, recognize genuine similarities, reuse only applicable parts, adapt
 them to the new requirements, avoid inheriting old assumptions blindly, and
 test and verify the adapted solution in its new environment.
 
+Record substantial verified findings in `PROJECT_LEARNING.md` when that file is
+available in the active workspace. Consult relevant entries before solving a
+similar problem, while treating them as references rather than fixed
+instructions.
+
 ## Post-project teaching and real-world application
 
 After a substantial project is complete and verified, teach it when Teresa
