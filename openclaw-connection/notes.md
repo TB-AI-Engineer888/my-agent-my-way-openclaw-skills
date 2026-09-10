@@ -4,4 +4,4 @@ Google Docs and Calendar were connected through Zapier MCP with a dedicated Gmai
 DeepSeek kept calling Zapier names through shell exec. A temporary tools.allow=["bundle-mcp"] plus a gateway restart made the live Telegram runtime use MCP tools; the coding profile was restored after the writes succeeded.
 The Google Doc and Calendar event were created with zapier__execute_zapier_write_action. Telegram confirmation was sent only after those writes returned success.
 Do not put tokens, connection IDs, or account emails in screenshots or notes.
-OpenClaw status captured from the VPS: Telegram connected (polling) and Zapier MCP authorized with 17 tools. Pending operator screenshots: calendar event and the Telegram clarifying-question turn.
+OpenClaw status on the VPS shows Telegram connected (polling) and Zapier MCP authorized with 17 tools, including execute_zapier_write_action.

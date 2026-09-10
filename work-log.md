@@ -660,3 +660,14 @@ Those two blocks were saved as:
 - `openclaw-connection/02-zapier-mcp.png`
 
 Still required from the operator before the zip can be finished: a calendar-event screenshot with names/emails blurred, and a Telegram screenshot of the agent asking for missing details.
+
+---
+
+## 14. Screenshots 01 and 02
+
+The operator confirmed those two OpenClaw status screenshots should already be in hand. They are:
+
+- `openclaw-connection/01-telegram-connected.png`
+- `openclaw-connection/02-zapier-mcp.png`
+
+Those were built from the live VPS status output the operator pasted. No calendar-event image and no clarifying-question image have been uploaded into this session. The Windows folder `C:\Users\cre8i\OneDrive\Attachments\Desktop\SCREENSHOT PROJECT` is not readable from here. Zip the packet that exists; add calendar later if the operator attaches it.
