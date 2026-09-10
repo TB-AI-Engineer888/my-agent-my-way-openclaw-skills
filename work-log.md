@@ -554,3 +554,12 @@ Verified catalog:
 - No message delivered externally and no Zapier action called.
 
 Decision: safe for one new phone message. Shell fallback and exit 127 are impossible under this temporary allowlist.
+
+Operator later supplied screenshot `assets/ad46bcda-d372-43ba-810e-aa893c64f263.png`. Timestamp correlation proved it is not a post-fix attempt:
+
+- Screenshot bot messages: 01:10–01:13 America/Toronto (05:10–05:13 UTC).
+- MCP-only policy applied: 01:14 America/Toronto (05:14 UTC).
+- Telegram session reset completed immediately afterward.
+- Current post-fix Telegram transcript contains no user request; it is a new empty session waiting for the phone message.
+
+Decision: do not diagnose this screenshot as a failure of the MCP-only policy and do not create objects from a maintenance session yet. Ask the operator to send the provided self-contained message once in the current session.
