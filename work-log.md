@@ -336,3 +336,33 @@ Results (10 MCP calls, no failures):
   - Google Calendar: `https://mcp.zapier.com/api/v1/connect-auth/GoogleCalendarCLIAPI?accountId=28599775`
 
 Decision: stop for the operator's browser consent. Both URLs must be opened with the same new dedicated Google account. After confirmation, query `list_zapier_connections` for both APIs and inspect enabled actions to prove Tasks 7–8.
+
+Operator confirmed both Google consents.
+
+Exact command:
+
+```bash
+openclaw agent \
+  --session-key agent:main:zapier-google-setup \
+  --message "The human confirmed both Google Docs and Google Calendar are connected. Verify from Zapier MCP tools only..." \
+  --json \
+  --timeout 600
+```
+
+Results (emails redacted):
+
+- Google Docs: 1 active non-stale connection. Write action present: `newtxtdocument` / `google_docs_create_document_from_text`.
+- Google Calendar: 1 active non-stale connection. Write actions present: `detailed_event` / `google_calendar_create_detailed_event` and `event` / `google_calendar_quick_add_event`.
+- No document or event was created in this verification step.
+
+Decision: **Tasks 7 and 8 are complete.**
+
+Configuration change to make the Telegram end-to-end pass:
+
+- Before: `/root/.openclaw/workspace/TOOLS.md` had only greeting/example notes.
+- Backup: `/root/.openclaw/workspace/TOOLS.md.pre-zapier-20260910T0406Z`
+- After: added a `## Zapier Google tools` section. If a document request is missing title, body, or review time, ask first; then create the Doc plus a review Calendar event; confirm in Telegram; never print emails, names, or tokens.
+
+Reason: items 10 and 23 require a real clarifying question. Items 11–13 require a document, a review event, and a Telegram completion message.
+
+Stop for the operator to send the underspecified Telegram request from the phone. Do not send it from the VPS.
