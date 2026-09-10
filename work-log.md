@@ -39,24 +39,181 @@ Required from the operator (not available in this environment):
 - SSH as `root` to `165.227.203.137`
 - Password for that account
 
-Status: **stopped — waiting for VPS password.** No SSH attempt yet. No files, services, or configs on the VPS have been read or changed.
+Password received from the operator. Stored only in the SSH session environment (`SSHPASS`); not written to this repo.
 
-Intended first inspect commands (after password is received; read-only):
+Local helper (this machine, not the VPS):
 
 ```bash
-ssh root@165.227.203.137
-uname -a
-hostname
-systemctl status openclaw-gateway.service --no-pager
-ss -tlnp | grep -E '18789|LISTEN'
-ps aux | grep -E 'openclaw|mcporter|node' | grep -v grep
-ls -la ~/.openclaw/
-ls -la /root/.openclaw/workspace/config/ 2>/dev/null
-cat /root/.openclaw/openclaw.json
-cat /root/.openclaw/openclaw.json.backup 2>/dev/null
-cat /root/.openclaw/workspace/config/mcporter.json 2>/dev/null
-journalctl -u openclaw-gateway.service -n 200 --no-pager
-openclaw --help 2>/dev/null || true
+sudo apt-get update -qq && sudo apt-get install -y -qq sshpass
 ```
 
-After those, determine real status of Tasks 1–6 from files, processes, and logs. Diagnose Task 6 from the system. Report before changing anything.
+Connect (do not log the password):
+
+```bash
+export SSHPASS='<VPS_ROOT_PASSWORD>'
+sshpass -e ssh -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/tmp/vps_known_hosts root@165.227.203.137
+```
+
+Result: connected. Hostname `bc-vps-326`, kernel `5.15.0-190-generic`, Ubuntu-family, up 16 days. No files changed on the VPS in this step.
+
+---
+
+## 2. Inspect (read-only)
+
+Commands run over SSH (exact):
+
+```bash
+hostname
+uname -a
+date
+uptime
+systemctl status openclaw-gateway.service --no-pager -l
+systemctl is-enabled openclaw-gateway.service
+ss -tlnp
+ps aux | grep -E "openclaw|mcporter|node|python|zapier" | grep -v grep
+ls -la /root/.openclaw/
+ls -la /root/.openclaw/workspace/
+ls -la /root/.openclaw/workspace/config/
+which openclaw mcporter node npm npx
+openclaw --version
+node --version
+systemctl list-units --all --no-pager | grep -iE "openclaw|claw|gateway|mcp"
+ls /etc/systemd/system/ | grep -iE "openclaw|claw|gateway"
+cat /root/.openclaw/openclaw.json
+cat /root/.openclaw/openclaw.json.backup
+cat /root/.openclaw/openclaw.json.last-good
+cat /root/.openclaw/workspace/config/mcporter.json
+ps -fp 326546 -o pid,ppid,lstart,cmd
+ps -fp 699 -o pid,ppid,user,lstart,cmd
+crontab -l
+systemctl list-units --type=service --state=running --no-pager
+ls -la /root/.openclaw/credentials/
+ls -la /root/.openclaw/logs/
+ls -la /root/.openclaw/state/
+find /usr /root /opt /home -name "*mcporter*"
+npm list -g --depth=0
+openclaw --help
+openclaw daemon status
+openclaw health
+openclaw status
+openclaw channels status
+openclaw mcp --help
+openclaw mcp list
+openclaw skills list
+openclaw plugins list
+ls -la /root/.mcporter/
+cat /root/.mcporter/credentials.json
+grep -n -iE "mcp|zapier|mcporter|telegram|google|npx|daemon|gateway" /root/.bash_history
+tail /root/.openclaw/logs/config-audit.jsonl
+cat /root/.openclaw/credentials/telegram-default-allowFrom.json
+cat /root/.openclaw/credentials/telegram-pairing.json
+cat /root/.config/systemd/user/openclaw-gateway.service
+python3 -c 'import json; print(json.load(open("/root/.npm/_npx/bdbf2deecdd22bc5/node_modules/mcporter/package.json")).get("version"))'
+head -80 /usr/lib/node_modules/openclaw/skills/mcporter/SKILL.md
+cat /root/.openclaw/agents/main/sessions/sessions.json
+find /root/.openclaw/agents -name "*.jsonl"
+grep -iE "zapier|mcporter|mcp|oauth|callback" /tmp/openclaw/openclaw-2026-09-10.log /tmp/openclaw/openclaw-2026-09-09.log
+journalctl --user -u openclaw-gateway.service -n 80 --no-pager
+# Telegram Bot API getMe / getWebhookInfo using the token already in openclaw.json
+openclaw mcp add --help
+openclaw mcp set --help
+openclaw mcp login --help
+python3  # extract Telegram session 86edf8aa-...jsonl roles/text
+cd /root/.openclaw/workspace && npx -y mcporter@0.13.10 --help
+cd /root/.openclaw/workspace && npx -y mcporter@0.13.10 config list
+cd /root/.openclaw/workspace && npx -y mcporter@0.13.10 list zapier --schema
+```
+
+Docs consulted:
+
+- `openclaw --help`, `openclaw mcp --help`, `openclaw mcp add --help`, `openclaw mcp login --help`
+- `/usr/lib/node_modules/openclaw/skills/mcporter/SKILL.md`
+- https://docs.openclaw.ai/cli/mcp
+- https://docs.zapier.com/mcp/get-started/connect/openclaw
+- https://docs.zapier.com/mcp/overview/how-connections-work
+- https://docs.zapier.com/mcp/get-started/authentication
+- https://zapier.com/blog/automate-openclaw-zapier-mcp/
+
+No VPS files, services, or configs were modified.
+
+### What the system actually is
+
+- Gateway is running: pid 326546, `/usr/bin/node ... gateway --port 18789`, listening on `127.0.0.1:18789` and `[::1]:18789` only.
+- Unit is a **user** systemd service: `~/.config/systemd/user/openclaw-gateway.service`, parent pid 699 = `/lib/systemd/systemd --user`.
+- `systemctl status openclaw-gateway.service` (system bus) fails: unit not found. Brief implied a system unit; that is wrong. Use `systemctl --user` or `openclaw daemon status`.
+- `journalctl --user -u openclaw-gateway.service` has no journal files. File logs are `/tmp/openclaw/openclaw-YYYY-MM-DD.log`.
+- OpenClaw 2026.7.1-2, Node v26.7.0. mcporter 0.13.10 present via npx cache, not on PATH as `/usr/bin/mcporter`.
+- Telegram in `openclaw.json`: `channels.telegram.enabled=true`, full bot token present. `openclaw channels status`: enabled, configured, running, connected, **polling** (webhook URL empty). Pairing allowFrom is Telegram user `8916402767`. `getMe`: bot username `Charles808bot`, id 8789979042.
+- Session `agent:main:telegram:direct:8916402767` last activity ~3 days ago (2026-09-06). Transcript shows user "Hello" → agent "Hello! How can I help you today?" then a long Zapier MCP setup conversation.
+- Model: primary `litellm/downtown-miami/openrouter/deepseek/deepseek-v4-flash`, fallback `litellm/claude-opus-4-6`, LiteLLM `https://llm.4geeks.ai`. Matches the brief.
+- `skills.entries.mcporter.enabled` is **false**. Native `mcp.servers` in `openclaw.json` is **absent**. `openclaw mcp list`: "No OpenClaw-managed MCP servers configured".
+- `/root/.openclaw/workspace/config/mcporter.json` contains zapier → `https://mcp.zapier.com/api/v1/connect`, clientName `openclaw`.
+- `/root/.mcporter/credentials.json`: OAuth **in progress** (client_id, codeVerifier, state, redirect `http://127.0.0.1:44531/callback`). **No access_token / refresh_token.**
+- `npx mcporter list zapier --schema` → 401, "run `mcporter auth zapier` to finish authentication."
+
+### Leftover incorrect troubleshooting (do not restore)
+
+- Backup `openclaw.json.backup` has a truncated Telegram token (secret suffix only, missing `botId:` prefix). History shows `openclaw config set channels.telegram.botToken` with that truncated value, later fixed with `openclaw channels add --token "<full token>"`.
+- History shows failed webhook registration against `https://165.227.203.137[:port]/hooks` using the truncated token. Current mode is polling; webhook URL is empty. Leave it.
+
+---
+
+## 3. Task status from the system (not from the brief)
+
+| Task | Actual status | Evidence |
+|------|---------------|----------|
+| 1 Telegram bot + token | **Complete** | `getMe` ok, username `Charles808bot` (brief wrote `@Charles808Bot`; Telegram usernames are case-insensitive) |
+| 2 OpenClaw Telegram channel | **Complete** | `channels.telegram.enabled=true`, channels status connected, polling |
+| 3 Test message / agent replies | **Complete** | Transcript 2026-09-06: user Hello → agent replies; later multi-turn Zapier conversation |
+| 4 Zapier account | **Complete enough to proceed** | User completed Zapier login/authorize in browser during the 2026-09-06 session. Cannot see the Zapier dashboard from this VPS. |
+| 5 MCP endpoint URL | **URL is the real Zapier endpoint; not a unique per-server URL** | Zapier docs: every client uses `https://mcp.zapier.com/api/v1/connect`. Brief's "OpenClaw MCP Server" name matches Zapier's OAuth auto-provisioning. |
+| 6 Add MCP to OpenClaw | **Incomplete** | Registration command succeeded (`mcporter config add`). Auth did not. Agent still gets HTTP 401. Native `mcp.servers` empty. |
+| 7–17 | Not started | No Google account; no Docs/Calendar tools; last Telegram activity is the failed Zapier OAuth, not a document request |
+
+---
+
+## 4. Why Task 6 did not finish
+
+Telegram transcript (session `86edf8aa-8c60-463a-977b-62ed69836ab7`, 2026-09-06) matches Zapier's official OpenClaw prompt: install mcporter, `mcporter config add zapier --url https://mcp.zapier.com/api/v1/connect`, then `mcporter auth`.
+
+What happened:
+
+1. `mcporter config add` wrote `config/mcporter.json`. That is why "the MCP registration command already ran successfully."
+2. `mcporter list zapier` returned 401, as expected before OAuth.
+3. `mcporter auth zapier` started a loopback OAuth listener on the **VPS**, first at `http://127.0.0.1:33211/callback` (later random ports 44061, 44969, 36259, 44531).
+4. The operator browses from a Windows laptop / phone, not from the VPS. Zapier approved the request. The browser then loaded `http://127.0.0.1:33211/callback?code=...` on **the laptop**, not on the VPS.
+5. The VPS listener timed out / was killed by the agent process watchdog before a valid callback arrived.
+6. The operator pasted the laptop callback URL into Telegram. The agent forwarded the authorization `code` to a **new** listener on a different port. Zapier HTML said "Authorization successful", but PKCE `code_verifier` did not match the new session, so no tokens were stored.
+7. Current credentials file still has client metadata + codeVerifier and **no tokens**. Live probe is still 401.
+
+This is not a Zapier-account problem and not a wrong endpoint. It is a loopback OAuth callback that cannot complete when the browser is not on the machine running `mcporter`.
+
+Zapier docs (how-connections-work): two auth paths — (A) OAuth from inside the client, (B) a dashboard **connection token** (`Authorization: Bearer`) to the same URL, for clients / headless setups that cannot finish OAuth. Course material accepts the dashboard route.
+
+OpenClaw docs (`openclaw mcp`): native `mcp.servers` in `openclaw.json` is what the agent runtime uses. `mcporter.json` is a separate registry. The mcporter **skill** is disabled, so even a completed mcporter OAuth would not automatically expose tools to Telegram unless the agent shells out to `npx mcporter`.
+
+---
+
+## 5. Decision — next work (not done yet)
+
+Do **not** retry `mcporter auth` OAuth against 127.0.0.1 on the VPS. That is the path that already failed.
+
+Intended fix for Task 6 (simplest that matches vendor docs + the headless VPS):
+
+1. Operator generates a Zapier MCP **connection token** in the Zapier MCP dashboard (Connect tab) for the existing server. That is on the operator's list (browser login).
+2. On the VPS, add Zapier as an OpenClaw-managed MCP server with Streamable HTTP and the Bearer header, then probe:
+
+```bash
+openclaw mcp add zapier \
+  --url "https://mcp.zapier.com/api/v1/connect" \
+  --transport streamable-http \
+  --header "Authorization: Bearer <CONNECTION_TOKEN>"
+openclaw mcp doctor zapier --probe
+```
+
+3. Confirm `openclaw mcp list` shows zapier and tools are listed. Do not enable extra skills unless a probe shows they are required.
+4. Leave Telegram alone. Do not recreate the bot.
+
+Then stop and prompt for a dedicated Gmail before Tasks 7–8.
+
+No config changes until this report is delivered.
