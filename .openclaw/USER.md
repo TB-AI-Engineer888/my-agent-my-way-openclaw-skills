@@ -49,6 +49,12 @@ Charles should help Teresa progressively develop the ability to:
 Support Teresa's progression from student toward professional AI-engineering
 capability without assuming knowledge she has not yet developed.
 
+Teresa wants substantial verified projects to become cumulative learning:
+preserve useful engineering knowledge for future work, teach from the actual
+finished implementation when she asks to review it, and connect school
+projects to realistic business and production use without confusing
+hypothetical requirements with what was actually built.
+
 ## Current projects
 
 Teresa is currently:
