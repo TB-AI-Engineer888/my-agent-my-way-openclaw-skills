@@ -410,4 +410,31 @@ openclaw agent \
   --timeout 600
 ```
 
-Status: running. No retry until both searches return.
+Verification results:
+
+- Google Docs exact title search: zero results.
+- Google Calendar searches around 3pm Toronto, across the full day, and with no search term: zero results.
+- Conclusion confirmed: neither external object exists. Safe to retry once.
+
+Additional defect found during read-only calls:
+
+- Before: both Google app accounts were connected, active, and non-stale, but neither was selected as the Zapier default. An action without `connection_id` failed: `No default connection is set for Google Calendar`.
+- Change: called `zapier__manage_zapier_connections` for Google Docs and Google Calendar with their existing connection IDs as `default_connection_id`.
+- After: both APIs report one default connection. Connection IDs and email are intentionally omitted from this repo log.
+- Reason: Telegram actions should use the dedicated test account without exposing or requiring account identifiers in the prompt.
+
+Agent-instruction correction:
+
+- Before: TOOLS.md named action keys `newtxtdocument`, `detailed_event`, and `event` but did not explain that they are not top-level tools.
+- After: TOOLS.md says to call `zapier__execute_zapier_write_action` with:
+  - Docs: `selected_api=GoogleDocsV2CLIAPI`, `action=newtxtdocument`, `tool_name=google_docs_create_document_from_text`, required `title` + `file`.
+  - Calendar: `selected_api=GoogleCalendarCLIAPI`, `action=detailed_event`, `tool_name=google_calendar_create_detailed_event`, after schema inspection.
+- It explicitly forbids direct `newtxtdocument`/`detailed_event` calls, web/shell searching for Zapier tools, or using a local file as a Google Doc substitute.
+
+Exact VPS edit command:
+
+```bash
+python3  # replace the `## Zapier Google tools` section in /root/.openclaw/workspace/TOOLS.md
+```
+
+Decision: preserve the failed Telegram conversation because it proves the required clarification. Ask the operator to send one precise continuation message from the phone; the next turn will load corrected workspace instructions and must use the MCP write meta-tool directly.
