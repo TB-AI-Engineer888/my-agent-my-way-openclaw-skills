@@ -603,3 +603,41 @@ Validation results:
 - Telegram accepted the completion message and returned message ID 209.
 
 Root cause correction: the Zapier MCP registration and authorization were correct, but the gateway had retained the old tool policy in memory. A session reset alone was insufficient; a gateway restart was required to make the live Telegram runtime use the new MCP-only policy.
+
+---
+
+## 12. Operator verification and status capture
+
+Operator confirmed in-browser that the Google Doc exists and the Calendar event exists. Telegram also shows the completion message (message 209) with the document URL.
+
+Exact status commands run on the VPS:
+
+```bash
+openclaw status
+openclaw channels status
+openclaw mcp list
+openclaw mcp status --verbose
+openclaw mcp show zapier
+openclaw mcp doctor zapier --probe
+openclaw mcp probe zapier
+openclaw mcp probe zapier --json
+```
+
+Live results (secrets omitted):
+
+- Telegram: enabled, configured, running, connected, mode polling, token from config
+- Zapier MCP: present, streamable-http, oauth authorized, tokens=yes, doctor ok
+- Probe: 17 tools, including `zapier__inspect_zapier_actions` and `zapier__execute_zapier_write_action`
+
+Temporary MCP-only policy restored after the verified writes:
+
+```bash
+cp -a /root/.openclaw/openclaw.json /root/.openclaw/openclaw.json.pre-restore-tools-allow-20260910T0626Z
+openclaw config unset tools.allow
+openclaw config validate
+openclaw config get tools
+```
+
+After: `tools = {"profile":"coding"}`. Zapier doctor still `ok`. Gateway restart was not required for this unset.
+
+Submission folder started at `openclaw-connection/` with the operator's Google Doc screenshot and Telegram completion screenshot. Remaining operator captures: OpenClaw status showing Telegram + Zapier MCP, the Calendar event, and the Telegram clarifying-question turn. Blur names and emails before zip.
