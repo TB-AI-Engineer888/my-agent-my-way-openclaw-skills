@@ -366,3 +366,48 @@ Configuration change to make the Telegram end-to-end pass:
 Reason: items 10 and 23 require a real clarifying question. Items 11–13 require a document, a review event, and a Telegram completion message.
 
 Stop for the operator to send the underspecified Telegram request from the phone. Do not send it from the VPS.
+
+---
+
+## 8. First end-to-end Telegram attempt — failed before external writes
+
+Operator sent:
+
+```text
+Create a document about OpenClaw homework
+```
+
+Agent correctly asked for title, content, and review time. Operator answered with title `OpenClaw homework notes`, short outline, and a 30-minute review tomorrow at 3pm; agent asked for timezone; operator answered Toronto.
+
+Observed failure (Telegram transcript `/root/.openclaw/agents/main/sessions/b52c656d-a84b-4eb4-81e8-952a5eb4388f.jsonl`):
+
+- The Telegram session received only the literal MCP meta-tools (`zapier__execute_zapier_write_action`, etc.), not app actions as top-level tools.
+- The agent incorrectly tried top-level tool `newtxtdocument` three times. Each returned exactly: `Tool newtxtdocument not found`.
+- It attempted disabled `web_search` twice and searched local docs/CLI repeatedly for Zapier tool names.
+- It never called `zapier__execute_zapier_write_action`.
+- It wrote `/root/.openclaw/workspace/openclaw-homework-notes.md` locally (3213 bytes); this is not a Google Doc.
+- Session ended `failed`; Telegram displayed: `Agent couldn't generate a response. Some tool actions may have already been executed.`
+
+Conclusion: the warning is generic. Transcript evidence says no Zapier write request was issued, so neither Google object could have been created by this attempt. Nevertheless, perform read-only searches through Zapier before retrying.
+
+Screenshot received from operator: original phone screenshot stored as `assets/76b362d6-450c-48cc-a2b8-098d6c283280.png`; it contains the failed conversation and is not final submission evidence.
+
+Local repo staging attempt failed (no VPS impact):
+
+```bash
+git add work-log.md assets/76b362d6-450c-48cc-a2b8-098d6c283280.png
+```
+
+Reason: the uploaded image is held in Cursor's project asset store outside `/workspace`, so that relative repo path does not exist. Commit the log only; copy evidence into the submission folder during final assembly.
+
+Read-only verification command:
+
+```bash
+openclaw agent \
+  --session-key agent:main:zapier-artifact-check \
+  --message "Use only the native Zapier MCP meta-tools. Read-only verification; do not call execute_zapier_write_action ... search Google Docs for OpenClaw homework notes and Google Calendar for 2026-09-11 around 15:00 America/Toronto ..." \
+  --json \
+  --timeout 600
+```
+
+Status: running. No retry until both searches return.
