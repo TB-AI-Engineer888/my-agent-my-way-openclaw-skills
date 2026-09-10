@@ -33,6 +33,13 @@ openclaw channels status
 Do not use the old mcporter registry as the health signal. The working
 integration is the native OpenClaw-managed Zapier MCP server.
 
+## Evidence
+
+See `TEST_EVIDENCE.md` for the personal inputs, connected-service results,
+read-back verification, and the timezone defect found and corrected during
+testing. It excludes account addresses, credentials, connection IDs, and Google
+object IDs.
+
 ## Submission packet
 
 See `openclaw-connection/` for screenshots and `notes.md`.
