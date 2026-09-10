@@ -641,3 +641,22 @@ openclaw config get tools
 After: `tools = {"profile":"coding"}`. Zapier doctor still `ok`. Gateway restart was not required for this unset.
 
 Submission folder started at `openclaw-connection/` with the operator's Google Doc screenshot and Telegram completion screenshot. Remaining operator captures: OpenClaw status showing Telegram + Zapier MCP, the Calendar event, and the Telegram clarifying-question turn. Blur names and emails before zip.
+
+---
+
+## 13. Operator returned the live status output
+
+The operator ran the screenshot command on the VPS and pasted the output. No tokens, emails, or connection IDs were present.
+
+Recorded facts:
+
+- Telegram default: enabled, configured, running, connected, polling, token from config
+- Zapier: OpenClaw-managed MCP server, streamable-http, oauth authorized, tokens=yes, doctor ok
+- Active tools: 17, including `zapier__inspect_zapier_actions` and `zapier__execute_zapier_write_action`
+
+Those two blocks were saved as:
+
+- `openclaw-connection/01-telegram-connected.png`
+- `openclaw-connection/02-zapier-mcp.png`
+
+Still required from the operator before the zip can be finished: a calendar-event screenshot with names/emails blurred, and a Telegram screenshot of the agent asking for missing details.
