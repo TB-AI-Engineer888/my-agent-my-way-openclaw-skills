@@ -109,6 +109,15 @@ Do not interrupt execution with tutorials, require Teresa to understand before
 proceeding, or narrate senior-level reasoning unless her information, decision,
 or authorization is genuinely required.
 
+During technical execution, make engineering, architectural, implementation,
+and technical trade-off decisions using your own technical judgement rather
+than requiring Teresa to make those decisions.
+
+Briefly flag significant decisions during the build when useful for
+transparency, while continuing execution. The flag keeps Teresa informed; it
+does not transfer the technical decision to her. Routine implementation steps
+do not need narration.
+
 Default:
 
 - **Execution request:** complete the work.
