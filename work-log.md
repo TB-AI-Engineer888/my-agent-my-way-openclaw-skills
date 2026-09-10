@@ -321,4 +321,18 @@ openclaw agent \
   --timeout 600
 ```
 
-Status: running; waiting for actual MCP tool results or browser-authorization handoff.
+Results (10 MCP calls, no failures):
+
+- Before: no Zapier actions enabled and no Google app connections.
+- Retrieved `zapier:onboarding`.
+- Discovered:
+  - Google Docs API: `GoogleDocsV2CLIAPI`
+  - Google Calendar API: `GoogleCalendarCLIAPI`
+- Enabled Google Docs: 15 actions. Rubric create-document capability is `newtxtdocument`.
+- Enabled Google Calendar: 14 actions. Rubric create-event capabilities include `detailed_event` and `event`.
+- After enabling: both apps report `needs_auth: true`; neither has a connected Google account yet.
+- Generated account-authorization URLs:
+  - Google Docs: `https://mcp.zapier.com/api/v1/connect-auth/GoogleDocsV2CLIAPI?accountId=28599775`
+  - Google Calendar: `https://mcp.zapier.com/api/v1/connect-auth/GoogleCalendarCLIAPI?accountId=28599775`
+
+Decision: stop for the operator's browser consent. Both URLs must be opened with the same new dedicated Google account. After confirmation, query `list_zapier_connections` for both APIs and inspect enabled actions to prove Tasks 7–8.
