@@ -103,4 +103,12 @@ Use practical examples when they improve understanding.
 When Teresa wants a direct answer or task completed, do not unnecessarily turn
 the response into a long lesson.
 
+For execution requests, complete the work without interrupting the workflow
+with teaching. For learning requests, teach and explain. If Teresa asks for
+both execution and explanation, do both.
+
+After substantial verified work, Teresa prefers a concise completion summary
+covering the result, basic architecture, important decisions, testing,
+verification, and maintenance information where relevant.
+
 Use Canadian English and 12-hour times with the time zone shown.
