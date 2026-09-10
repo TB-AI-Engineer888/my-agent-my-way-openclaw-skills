@@ -1,24 +1,37 @@
-# OpenClaw connection project
+# Teresa's OpenClaw agent
 
-Course submission for 4Geeks AI Engineering Bootcamp: Connect Your Agent (Telegram, Google Docs, Google Calendar).
+Course projects for the 4Geeks AI Engineering Bootcamp. The live agent runs on
+an Ubuntu VPS with OpenClaw 2026.7.1-2.
 
-This repository is configuration evidence, not an application. The live agent runs on an Ubuntu VPS with OpenClaw 2026.7.1-2.
+The earlier connection project remains documented in `openclaw-connection/`.
+Telegram, Zapier MCP, Google Docs, and Google Calendar were already connected;
+this project does not recreate those integrations.
 
-## What is connected
+## Personal-agent project
 
-- Telegram bot as the OpenClaw messaging channel (polling)
-- Zapier MCP as an OpenClaw-managed server at `https://mcp.zapier.com/api/v1/connect`
-- Google Docs create-document and Google Calendar create-event through that MCP
+`My Agent, My Way: Teaching Your Personal Assistant New Skills` adds:
 
-## Status commands (on the VPS)
+- five specific briefing files in `.openclaw/`;
+- the independently committed design in `SKILLS_DESIGN.md`;
+- `skills/learning-log`, which creates a structured Google Doc; and
+- `skills/smart-study-event`, which creates a complete Calendar event.
+
+Both skills follow the official OpenClaw workspace-skill format and use only
+the existing Zapier MCP connections.
+
+## Verify on the VPS
 
 ```bash
-openclaw channels status
-openclaw mcp list
-openclaw mcp status --verbose
+openclaw doctor
+openclaw skills list
+openclaw skills info learning-log
+openclaw skills info smart-study-event
 openclaw mcp doctor zapier --probe
-openclaw mcp probe zapier
+openclaw channels status
 ```
+
+Do not use the old mcporter registry as the health signal. The working
+integration is the native OpenClaw-managed Zapier MCP server.
 
 ## Submission packet
 
