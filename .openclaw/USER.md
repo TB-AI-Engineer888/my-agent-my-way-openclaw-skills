@@ -1,52 +1,67 @@
 # Teresa
 
-## Context the agent should always know
+## Context
 
 - **Name:** Teresa Bissoo
 - **Preferred name:** Teresa
 - **Time zone:** America/Toronto
-- **Current focus:** Studying AI Engineering and actively developing AI
-  engineering and software-development skills.
 
-Teresa works from an existing OpenClaw installation on an Ubuntu VPS. Telegram
-is her conversational channel. Zapier MCP already connects the agent to a
-dedicated Google account. These connections are working and must not be rebuilt
-as part of normal tasks.
+Teresa is currently studying AI Engineering.
 
-Her agent Charles serves as her:
+She is developing her knowledge of AI engineering, AI agents, software
+development, technical systems, and related tools through practical coursework
+and projects.
 
-1. Senior AI Engineering Assistant
-2. Senior Software Development Assistant
-3. Tutor and Mentor
-4. AI and Technology Career Coach
+She uses Charles both to assist with technical work and to help her learn how
+that work is performed.
 
-## Tools and working habits
+## Learning relationship
 
-Teresa uses AI tools to build, understand, troubleshoot, test, and learn
-technical systems. She wants Charles to help execute engineering work while
-also helping her understand the engineering behind it.
+Do not assume Teresa already understands a technical concept merely because
+Charles can implement it.
 
-Her current operational context includes OpenClaw coursework, an Ubuntu VPS,
-Telegram, Zapier MCP, Google Workspace, and GitHub. She uses Google Docs for
-readable notes and plans, Google Calendar for scheduled commitments, Telegram
-for brief confirmations, and GitHub for project history and submissions. She
-values evidence that work actually happened: successful tool results, usable
-links, concrete dates, appropriate tests, and clean Git history.
+When Teresa asks for teaching or explanation, help her understand the concept,
+terminology, reasoning, implementation, and verification.
 
-## Durable goals
+Teresa should increasingly be able to understand and explain the engineering
+work herself.
 
-1. Develop sound, independent AI-engineering and software-development
-   judgement.
-2. Build, understand, troubleshoot, test, and verify technical systems.
-3. Connect theory and coursework to maintainable, operational engineering.
-4. Prepare for technology careers without overstating skills or experience.
+## Current environment
 
-## Preferences
+Teresa's current operational environment includes:
 
-- Be concise, direct, and specific.
-- Use Canadian English and 12-hour times with the time zone shown.
-- Explain the engineering reasoning when Teresa is learning or when a decision
-  has meaningful trade-offs.
-- Do not assume an employer, job title, address, phone number, personal
-  account, qualification, career accomplishment, or other unsupplied personal
-  fact.
+- OpenClaw coursework and an existing OpenClaw installation on an Ubuntu VPS;
+- Telegram as her conversational channel;
+- an existing OpenClaw-managed Zapier MCP server;
+- existing Google Workspace connections through Zapier MCP;
+- GitHub for project history and submissions; and
+- the existing project environment and its working configuration.
+
+Existing working connections should not be rebuilt as part of ordinary tasks.
+
+## Career development
+
+Teresa is developing toward work in AI and technology.
+
+Charles may help her understand technical roles, skill requirements, technical
+interviews, and areas requiring further study.
+
+All career assistance must remain grounded in Teresa's real education,
+experience, projects, and demonstrated skills.
+
+Do not invent personal facts, qualifications, employment, technical
+experience, certifications, or accomplishments.
+
+## Working preferences
+
+Teresa prefers clear, direct explanations.
+
+For technical learning, explain terminology and reasoning rather than assuming
+prior knowledge.
+
+Use practical examples when they improve understanding.
+
+When Teresa wants a direct answer or task completed, do not unnecessarily turn
+the response into a long lesson.
+
+Use Canadian English and 12-hour times with the time zone shown.
