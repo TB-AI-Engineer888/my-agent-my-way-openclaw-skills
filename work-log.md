@@ -438,3 +438,59 @@ python3  # replace the `## Zapier Google tools` section in /root/.openclaw/works
 ```
 
 Decision: preserve the failed Telegram conversation because it proves the required clarification. Ask the operator to send one precise continuation message from the phone; the next turn will load corrected workspace instructions and must use the MCP write meta-tool directly.
+
+---
+
+## 9. Second Telegram attempt — MCP tools absent from channel session
+
+Operator screenshot showed repeated assistant messages and an exit-127 shell error. Transcript inspection confirmed:
+
+- The model tried `zapier__inspect_zapier_actions` via `exec`, producing `/bin/sh: 1: zapier__inspect_zapier_actions: not found`.
+- Direct tool attempts also returned `Tool zapier__inspect_zapier_actions not found`.
+- This was not merely a model routing mistake: `systemPromptReport.tools.entries` for the Telegram session contained **zero** `zapier__*` tools.
+- In contrast, the CLI setup and verification sessions each contained all 17 `zapier__*` tools.
+- The Telegram run was killed after looping; no Zapier write action ran.
+
+Root cause: the Telegram session had cached an empty MCP catalog. Workspace prose cannot make a missing runtime tool callable.
+
+Screenshot received: `assets/6550d6bc-ce22-4ba5-ad87-a5a378a8c612.png` in Cursor's external asset store. It is diagnostic evidence, not final proof.
+
+Session reset:
+
+```bash
+cp -a /root/.openclaw/agents/main/sessions/sessions.json /root/.openclaw/agents/main/sessions/sessions.json.pre-telegram-mcp-reset-20260910T0456Z
+openclaw gateway call sessions.reset --params '{"key":"agent:main:telegram:direct:8916402767","reason":"repair-mcp-tool-catalog"}' --json
+```
+
+First reset failed without changing the session:
+
+```text
+invalid sessions.reset params: at /reason: must be equal to constant
+```
+
+Source inspection showed allowed reasons are `new` or `reset`. Retried:
+
+```bash
+openclaw gateway call sessions.reset --params '{"key":"agent:main:telegram:direct:8916402767","reason":"reset"}' --json
+```
+
+Result: success; old transcript archived and new Telegram session ID created while preserving Telegram route metadata.
+
+Non-delivered diagnostic:
+
+```bash
+openclaw agent \
+  --session-key agent:main:telegram:direct:8916402767 \
+  --message "Diagnostic only: do not call any tool and do not deliver externally. Reply with exactly READY." \
+  --json \
+  --timeout 180
+```
+
+Result:
+
+- Run completed; not delivered to Telegram.
+- New Telegram session tool catalog: 17 `zapier__*` tools.
+- `zapier__execute_zapier_write_action` and `zapier__inspect_zapier_actions` are present.
+- Tool schema size increased from 23,637 chars (broken session) to 29,341 chars (fixed session).
+
+Decision: tool routing is now repaired and verified before user retry. Because backend context was reset, send one self-contained request containing title, body scope, exact date/time/timezone, event duration, and direct-MCP instruction.
