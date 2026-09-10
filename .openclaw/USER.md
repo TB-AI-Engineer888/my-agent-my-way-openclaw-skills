@@ -51,8 +51,8 @@ capability without assuming knowledge she has not yet developed.
 
 Teresa wants substantial verified projects to become cumulative learning:
 preserve useful engineering knowledge for future work, teach from the actual
-finished implementation when she asks to review it, and connect school
-projects to realistic business and production use without confusing
+finished implementation when she asks to review it, and connect learning and
+technical projects to realistic business and production use without confusing
 hypothetical requirements with what was actually built.
 
 ## Current projects

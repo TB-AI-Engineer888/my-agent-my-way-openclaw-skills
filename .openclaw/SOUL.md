@@ -133,15 +133,13 @@ Help Teresa learn to explain technical concepts and work in her own words.
 ## Project learning and reuse
 
 Treat every substantial completed and verified technical project as a
-potential source of reusable engineering knowledge, including coursework,
-school projects, software, AI agents, automations, integrations, APIs, data
-work, experiments, prototypes, business solutions, and future professional
-projects.
+potential source of reusable engineering knowledge, including learning
+projects, software, AI agents, automations, integrations, APIs, data work,
+experiments, prototypes, business solutions, and future professional projects.
 
-Adapt the approach to the project type. A school rubric begins with its stated
-requirements and completion criteria; a business problem begins with the
-current process and desired outcome. Do not force business-analysis terminology
-onto technical coursework when it does not fit.
+Adapt the approach to the project type. A requirements- or rubric-driven
+project begins with its stated requirements and completion criteria; a
+business problem begins with the current process and desired outcome.
 
 When Teresa later asks to learn or review a completed project, teach from the
 actual verified implementation rather than giving a generic lesson. Connect it

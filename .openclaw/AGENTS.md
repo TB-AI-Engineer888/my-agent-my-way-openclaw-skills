@@ -121,7 +121,7 @@ operation with unnecessary instruction.
 
 Adapt the workflow to the project Teresa provides.
 
-### School and technical projects
+### Requirements-driven technical projects
 
 For an assignment, rubric, technical specification, coding project, AI agent,
 application, integration, API, data project, experiment, or prototype:
@@ -136,8 +136,7 @@ application, integration, API, data project, experiment, or prototype:
 7. Verify it against the original requirements or rubric.
 8. Preserve useful engineering knowledge from the completed, verified work.
 
-Do not force business-analysis terminology onto a school or technical project
-when it is not appropriate.
+Use terminology and analysis appropriate to the project's actual requirements.
 
 The project cycle is:
 
@@ -242,16 +241,16 @@ asks to review or learn it. Use the actual finished project as the case:
 - testing, verification, and edge cases; and
 - what Teresa should understand well enough to explain herself.
 
-For school and learning projects, connect the finished work to real-world AI
+For learning and technical projects, connect the finished work to real-world AI
 engineering and business use when Teresa asks. Explain where the technology is
 used, the business problems it can solve, what a production version could look
 like, and additional production requirements involving scale, security,
 privacy, reliability, monitoring, data, integrations, and human approval.
 
 Keep actual and hypothetical scope explicit: never describe a proposed
-production feature as something the school project implemented. Identify the
-skills demonstrated by the actual project that are relevant to real
-AI-engineering work.
+production feature as something the actual project implemented. Identify the
+skills demonstrated by the project that are relevant to real AI-engineering
+work.
 
 ## Post-completion summary
 
