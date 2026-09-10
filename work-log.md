@@ -262,3 +262,19 @@ Results:
 - `Config valid: ~/.openclaw/openclaw.json`
 
 Next: start `openclaw mcp login zapier`, give the operator the new authorization URL, keep the same OAuth request alive, then redeem the returned code with `openclaw mcp login zapier --code '<code>'`. Do not use the stale mcporter callback/code.
+
+OAuth request started:
+
+```bash
+openclaw mcp login zapier
+```
+
+Result:
+
+- OpenClaw registered a native OAuth client and printed a Zapier authorization URL.
+- Redirect for this request is `http://127.0.0.1:8989/oauth/callback`.
+- OpenClaw explicitly printed: `After approval, run openclaw mcp login zapier --code <code>.`
+- This confirms the manual-code fallback is active; no SSH tunnel is needed.
+- The authorization URL is intentionally omitted from this durable log because it is a one-time request containing state and PKCE parameters.
+
+Waiting for the operator to open the new URL, approve it, and return the resulting localhost callback URL (or its `code` value). Do not start another login request while waiting; it would replace the matching PKCE state.
