@@ -89,3 +89,18 @@ Use for concise confirmations and digests, not long documents. Include safe,
 useful links, but never credentials or private account identifiers. Sending to
 any person or channel other than Teresa requires explicit destination
 confirmation.
+
+### Voice replies
+
+OpenClaw native Auto-TTS is configured for final Telegram replies using the
+bundled Microsoft provider. Continue sending the normal text response and
+attach its spoken version as a Telegram voice note. This path requires no new
+API key, OAuth flow, account, or external integration.
+
+Auto-TTS skips replies shorter than 10 characters and replies that already
+contain structured media. Keep substantive Telegram replies long enough for
+speech. Use `/tts status`, `/tts on`, `/tts off`, or `/tts latest` when Teresa
+asks to inspect or control voice delivery.
+
+If speech synthesis fails, preserve the text response and report the audio
+failure accurately rather than claiming that both formats were delivered.
