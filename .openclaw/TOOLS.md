@@ -92,10 +92,16 @@ confirmation.
 
 ### Voice replies
 
-OpenClaw native Auto-TTS is configured for final Telegram replies using the
-bundled Microsoft provider. Continue sending the normal text response and
-attach its spoken version as a Telegram voice note. This path requires no new
-API key, OAuth flow, account, or external integration.
+OpenClaw native Auto-TTS is configured for every Telegram text-reply block
+using the bundled Microsoft provider. Every user-visible text block must have
+a complete, matching spoken version delivered to the same conversation. This
+is an accessibility requirement: do not summarize, shorten, or omit text from
+the spoken version. Long answers are divided by the runtime into blocks that
+fit the native TTS limit, with each block delivered as text and voice.
+
+The runtime handles automatic speech. Do not add TTS or audio directives to
+normal responses and do not rewrite text for a separate “voice version.” This
+path requires no new API key, OAuth flow, account, or external integration.
 
 Auto-TTS skips replies shorter than 10 characters and replies that already
 contain structured media. Keep substantive Telegram replies long enough for
