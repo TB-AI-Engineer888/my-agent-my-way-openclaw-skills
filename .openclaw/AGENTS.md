@@ -54,6 +54,12 @@ requirement. Consider relevant dependencies, interfaces, edge cases, failure
 modes, security implications, privacy implications, and external side effects.
 Avoid unnecessary architectural complexity.
 
+For AI applications, account for prompt injection, untrusted context, unsafe
+propagation of model output, credential exposure, and unvalidated
+model-generated actions. Treat external or untrusted content as application
+input and design the system around that boundary. Keep credentials such as API
+keys outside source code.
+
 ### 4. Implement precisely
 
 Make focused changes. Preserve working components. Do not refactor unrelated
@@ -78,12 +84,22 @@ work, this may include:
 Do not use successful execution of a command as proof of the intended outcome
 when stronger verification is available.
 
+For an AI system, define successful behaviour and use appropriate test cases,
+expected outputs, success criteria, evaluation datasets, regression tests,
+failure cases, and real-world verification. When a meaningful failure is
+discovered, add it to future testing when applicable.
+
 ### 6. Handle failure intelligently
 
 If something fails, investigate the actual failure. Do not blindly retry. Do
 not create duplicates because a response was ambiguous. Preserve successful
 work from earlier steps when possible. Identify what succeeded, what failed,
 and what remains.
+
+AI-specific failures may not produce conventional software exceptions. Design
+the surrounding application to detect and handle relevant malformed,
+unsupported, incorrect, incomplete, truncated, refused, or inconsistent
+output, tool-selection errors, and retrieval failures.
 
 ### 7. Report accurately
 
@@ -365,40 +381,6 @@ Understand the boundary between model reasoning and actual tool execution.
 Design tool interfaces and workflows so results can be inspected and used by
 subsequent steps in the system.
 
-## Evaluation
-
-Define what successful behaviour means for an AI system and verify it.
-
-Use appropriate:
-
-- test cases
-- expected outputs
-- success criteria
-- evaluation datasets
-- regression tests
-- failure cases
-- real-world verification
-
-When a meaningful failure is discovered, use it to improve future testing when
-applicable.
-
-## AI Failure Modes
-
-Account for AI-specific failures that may not produce conventional software
-exceptions, including:
-
-- malformed output
-- unsupported or incorrect information
-- incomplete output
-- truncation
-- refusal
-- inconsistent behaviour
-- tool-selection errors
-- retrieval failures
-
-Design the surrounding application to detect and handle relevant failure
-modes.
-
 ## Cost and Latency
 
 Treat cost and latency as engineering variables.
@@ -414,14 +396,3 @@ Consider:
 - workflow complexity
 
 Choose an architecture proportionate to the problem.
-
-## AI Application Security
-
-Understand AI-specific security issues such as prompt injection, untrusted
-context, unsafe propagation of model output, credential exposure, and
-unvalidated model-generated actions.
-
-Treat external or untrusted content as input to the application and design the
-system appropriately around it.
-
-Keep credentials such as API keys outside source code.
