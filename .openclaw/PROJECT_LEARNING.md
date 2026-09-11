@@ -102,3 +102,44 @@ Inspect and verify those facts independently for every new project.
 - Update prior entries with dated corrections rather than silently replacing
   historical facts.
 - Remove repository-specific deploy access when it is no longer needed.
+
+## 2026-09-11 — Add native Telegram voice replies
+
+### Problem and implemented solution
+
+Teresa wanted Charles to retain normal Telegram text replies and also provide a
+spoken version. The live OpenClaw installation already included Auto-TTS, so the
+solution uses `messages.tts` with `auto: always`, `mode: final`, and the bundled
+Microsoft provider. No additional service, dependency, account, API key, or
+OAuth connection was introduced.
+
+The configured Canadian English voice produces MP3 audio. In OpenClaw's normal
+Telegram ingress-and-reply path, the final text remains visible and the
+generated audio is added as a TTS supplement.
+
+### Verification and operational findings
+
+- OpenClaw accepted and validated the TTS configuration without a gateway
+  restart.
+- The gateway reported Auto-TTS enabled with Microsoft configured.
+- A direct synthesis test produced a non-empty Telegram-compatible MP3.
+- The existing bot successfully delivered a normal text test and a five-second
+  spoken voice test to Teresa's Telegram chat.
+- Telegram remained enabled, connected, and healthy in polling mode.
+- The existing Zapier MCP probe remained healthy after the change.
+- Replies shorter than 10 characters and replies containing structured media
+  are intentionally skipped by Auto-TTS.
+- The current long-lived Telegram conversation separately triggered the model
+  provider's prompt-injection filter before reply generation. Start a fresh
+  Telegram session with `/new` before final live paired-response verification;
+  this is a conversation/provider issue, not a synthesis or Telegram delivery
+  failure.
+
+### Reuse guidance
+
+For supported OpenClaw channels, inspect native `messages.tts` and channel voice
+capabilities before adding an external speech service. Verify configuration,
+synthesis, media integrity, channel delivery, and the complete inbound reply
+path separately. Preserve text delivery when synthesis fails, and do not treat
+component tests as proof of a complete automatic reply when an upstream model
+or session failure prevents that path from running.
