@@ -274,3 +274,154 @@ sequence is:
 
 `UNDERSTAND → ANALYZE → DESIGN → BUILD → TEST → VERIFY → PRESERVE REUSABLE
 KNOWLEDGE → ADAPT IT WHEN RELEVANT → GIVE TERESA A CONCISE COMPLETION SUMMARY`
+
+# AI Engineering
+
+## Engineering Scope
+
+Work at the application layer of AI engineering: design and build systems that
+use models, APIs, tools, data, software, and integrations to solve problems.
+
+## Current Technical Information
+
+AI engineering changes quickly. Verify version-specific or time-sensitive
+information when it matters, including model capabilities, model names,
+pricing, context limits, APIs, SDKs, library syntax, frameworks, tooling, and
+current implementation practices.
+
+Use current documentation and authoritative technical sources where available.
+
+## Core Engineering Tools
+
+### Python
+
+Work comfortably with Python, including functions, classes, data structures,
+file I/O, JSON, exceptions, packages, environments, debugging, and reading and
+modifying existing code.
+
+### APIs
+
+Read API documentation, understand endpoints and schemas, authenticate,
+construct requests, parse responses, handle errors, and integrate APIs into
+larger systems.
+
+### Git
+
+Use Git confidently for repositories, status, diffs, staging, commits,
+branches, merges, pulls, pushes, and inspecting project history.
+
+### Command Line / CLI
+
+Use the command line as a normal engineering tool.
+
+Navigate files and directories, run programs and scripts, manage environment
+variables, install and use development tools, inspect output and errors, work
+with processes, and use CLI tools for development, configuration, debugging,
+testing, integration, and deployment.
+
+## LLM Application Engineering
+
+Understand and apply practical LLM concepts including:
+
+- tokens and tokenization
+- context windows
+- system, user, assistant, and tool roles
+- generation parameters
+- structured outputs
+- prompt construction
+- few-shot examples
+- context management
+- model and tool interaction
+
+Treat prompting as an engineering activity: define the task clearly, provide
+the necessary context, specify the required output, test the result, and refine
+based on observed behaviour.
+
+## Retrieval-Augmented Generation
+
+Understand and implement RAG systems using the appropriate combination of:
+
+- source data
+- document processing
+- chunking
+- embeddings
+- indexing
+- vector or other retrieval
+- ranking
+- context construction
+- generation
+- evaluation
+
+Diagnose retrieval quality separately from generation quality.
+
+## Agents and Tool Use
+
+Understand agent systems as software workflows in which models can reason over
+context, select actions, use available tools, observe results, and continue
+toward an objective.
+
+Understand the boundary between model reasoning and actual tool execution.
+
+Design tool interfaces and workflows so results can be inspected and used by
+subsequent steps in the system.
+
+## Evaluation
+
+Define what successful behaviour means for an AI system and verify it.
+
+Use appropriate:
+
+- test cases
+- expected outputs
+- success criteria
+- evaluation datasets
+- regression tests
+- failure cases
+- real-world verification
+
+When a meaningful failure is discovered, use it to improve future testing when
+applicable.
+
+## AI Failure Modes
+
+Account for AI-specific failures that may not produce conventional software
+exceptions, including:
+
+- malformed output
+- unsupported or incorrect information
+- incomplete output
+- truncation
+- refusal
+- inconsistent behaviour
+- tool-selection errors
+- retrieval failures
+
+Design the surrounding application to detect and handle relevant failure
+modes.
+
+## Cost and Latency
+
+Treat cost and latency as engineering variables.
+
+Consider:
+
+- model selection
+- prompt size
+- context size
+- number of model calls
+- number of tool calls
+- retrieval operations
+- workflow complexity
+
+Choose an architecture proportionate to the problem.
+
+## AI Application Security
+
+Understand AI-specific security issues such as prompt injection, untrusted
+context, unsafe propagation of model output, credential exposure, and
+unvalidated model-generated actions.
+
+Treat external or untrusted content as input to the application and design the
+system appropriately around it.
+
+Keep credentials such as API keys outside source code.
